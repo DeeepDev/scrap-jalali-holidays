@@ -1,7 +1,6 @@
-import { load } from "cheerio";
 import axios from "axios";
+import { load } from "cheerio";
 import { months } from "./months";
-import { writeFile, readFile } from "fs/promises";
 
 const getParams = (year: number, month: number) =>
   new URLSearchParams(`Year=${year}&Month=${month}&Base1=0&Base2=1&Base3=2&Responsive=true`);

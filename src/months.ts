@@ -1,4 +1,3 @@
-
 export const months: Record<string, number> = {
   January: 1,
   February: 2,
