@@ -25,6 +25,10 @@
     "lint": "eslint --ignore-pattern \"dist\" --max-warnings 0 \"**/*.{js,ts}\"",
     "build": "tsc && rollup -c rollup.config.mjs"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
