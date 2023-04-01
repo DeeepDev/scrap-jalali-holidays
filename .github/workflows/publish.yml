@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16.x"
+          # FIXME: Sound like pnpm cache is not working correctly
           cache: "pnpm"
 
       - name: Install Dependencies and Build
