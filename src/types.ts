@@ -1,3 +1,13 @@
+export type CliOptions = {
+  fromYear: string;
+  fromMonth: string;
+  toYear: string;
+  toMonth: string;
+  forceUpdate: boolean;
+  scrapOccasions: boolean;
+  outputFile: string;
+};
+
 export type LocalDate = { year: string | number; month: string | number };
 export type Holiday = { occasion?: string };
 export type Holidays = Record<string, Holiday>;

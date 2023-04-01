@@ -3,17 +3,7 @@ import { format } from "date-fns-jalali";
 import fs from "fs";
 import { mergeAll, range, xprod } from "ramda";
 import { extractHolidays, fileExists } from "./core";
-import { Holidays, LocalDate, Output } from "./types";
-
-type CliOptions = {
-  fromYear: string;
-  fromMonth: string;
-  toYear: string;
-  toMonth: string;
-  forceUpdate: boolean;
-  scrapOccasions: boolean;
-  outputFile: string;
-};
+import { CliOptions, Holidays, LocalDate, Output } from "./types";
 
 const program = new Command();
 
