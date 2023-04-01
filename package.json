@@ -9,6 +9,10 @@
     "scraping",
     "jalali holidays"
   ],
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.cjs",
   "description": "A Nodejs app that scraps jalali holidays from badesaba.ir",
   "license": "MIT",
   "bin": {
