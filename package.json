@@ -1,6 +1,6 @@
 {
   "name": "scrap-jalali-holidays",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": {
     "name": "DeeepDev",
     "email": "amirabody.dev@gmail.com"
@@ -9,6 +9,10 @@
     "scraping",
     "jalali holidays"
   ],
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.cjs",
   "description": "A Nodejs app that scraps jalali holidays from badesaba.ir",
   "license": "MIT",
   "bin": {
@@ -41,6 +45,7 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
+    "@changesets/cli": "^2.26.1",
     "axios": "^1.2.2",
     "cheerio": "1.0.0-rc.12",
     "commander": "^10.0.0",

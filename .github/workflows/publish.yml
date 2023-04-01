@@ -1,14 +1,14 @@
-name: test
+name: publish
 
 on:
-  pull_request:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
-  validate:
+  publish:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout The Repository
         uses: actions/checkout@v3
@@ -24,7 +24,13 @@ jobs:
           node-version: "16.x"
           cache: "pnpm"
 
-      - run: pnpm install
-      - run: pnpm lint
-      - run: pnpm format:check
-      - run: pnpm type-check
+      - name: Install Dependencies and Build
+        run: |
+          pnpm install
+          pnpm build
+      - name: Create Pull-Request or Publish to npm
+        id: changeset
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
