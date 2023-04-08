@@ -28,3 +28,4 @@ jobs:
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm type-check
+      - run: pnpm test

@@ -6,8 +6,8 @@ export default [
   {
     input: "src/cli.ts",
     output: {
-      file: "dist/index.cjs",
-      format: "cjs",
+      file: "dist/index.mjs",
+      format: "es",
       compact: true,
     },
     plugins: [typescript(), terser(), shebang({ include: ["**/*.ts"] })],
