@@ -1,9 +1,9 @@
 import { Command, Option } from "commander";
-import { format } from "date-fns-jalali";
 import fs from "fs";
-import { mergeAll, range, xprod } from "ramda";
-import { extractHolidays, fileExists } from "./core";
+import { mergeAll } from "ramda";
+import { extractHolidays } from "./core";
 import { CliOptions, Holidays, LocalDate, Output } from "./types";
+import { addLeadingZeroIfSingle, compareLocalDate, createDatesArr, createOutput, fileExists } from "./utils";
 
 const program = new Command();
 
@@ -23,33 +23,14 @@ const parseArgsIntoOptions = (rawArgs: string[]) => {
   return program.opts<CliOptions>();
 };
 
-const createOutput = (holidays: Holidays): Output => {
-  const now = new Date();
-  return { created_at: { year: format(now, "yyyy"), month: format(now, "MM") }, holidays };
-};
-
-const substituteLocalDate = (date1: LocalDate, date2: LocalDate): LocalDate => ({
-  year: Math.max(+date1.year, +date2.year),
-  month:
-    +date1.year > +date2.year || (+date1.year === +date2.year && +date1.month >= +date2.month)
-      ? +date1.month
-      : +date2.month,
-});
-
-const createDatesArr = ({ from, to }: { from: LocalDate; to: LocalDate }): LocalDate[] => {
-  const yearRange = range(+from.year, +to.year + 1);
-  const monthRange = range(+from.month, +to.month + 1);
-  return xprod(yearRange, monthRange).map(([year, month]) => ({ year, month }));
-};
-
 const cli = async (args: string[]): Promise<void> => {
   let options = parseArgsIntoOptions(args);
 
   const { forceUpdate, outputFile: path } = options;
 
   let oldHolidays: Holidays = {};
-  let from: LocalDate = { year: options.fromYear, month: options.fromMonth },
-    to: LocalDate = { year: options.toYear, month: options.toMonth };
+  let from: LocalDate = { year: +options.fromYear, month: +options.fromMonth },
+    to: LocalDate = { year: +options.toYear, month: +options.toMonth };
 
   return fileExists(path)
     .then((exists) =>
@@ -57,7 +38,7 @@ const cli = async (args: string[]): Promise<void> => {
         ? fs.promises.readFile(path, { encoding: "utf-8" }).then((json) => {
             const oldOutput = JSON.parse(json) as Output;
             oldHolidays = oldOutput.holidays;
-            from = substituteLocalDate(oldOutput.created_at, from);
+            from = compareLocalDate(oldOutput.created_at, from) >= 0 ? oldOutput.created_at : from;
             return createDatesArr({ from, to });
           })
         : createDatesArr({ from, to })
@@ -74,3 +55,11 @@ cli(process.argv).catch((err) => {
 process.on("unhandledRejection", (reason, promise) => {
   console.log("Unhandled Rejection at:", promise, "reason:", reason);
 });
+
+/**
+ *
+ * @param date - JS Date object
+ * @returns date in `YYYY/MM/DD` format, used for lookup in scrap-jalali-holidays output json
+ */
+export const getHolidaysJsonKey = (date: Date) =>
+  [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(addLeadingZeroIfSingle).join("-");

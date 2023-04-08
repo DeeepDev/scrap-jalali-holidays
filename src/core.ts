@@ -1,5 +1,5 @@
 import axios from "axios";
-import fs from "fs";
+import chalk from "chalk";
 import { fromPairs, keys } from "ramda";
 import { Holidays, LocalDate, ResponseBody } from "./types";
 
@@ -9,17 +9,16 @@ const getUrl = (year: LocalDate["year"], month: LocalDate["year"]) =>
   `https://badesaba.ir/api/site/getDataCalendar/${month}/${year}`;
 
 export const extractHolidays = async ({ year, month }: LocalDate): Promise<Holidays> =>
-  axios<ResponseBody>({ method: "post", url: getUrl(year, month) }).then(({ data }) => {
-    const holidays: Holidays = fromPairs(
-      data.filter(findHoliday).map((item) => [Date.parse(item.date), { occasion: findHoliday(item)!.event }])
-    );
+  axios<ResponseBody>({ method: "post", url: getUrl(year, month) })
+    .then(({ data }) => {
+      const holidays: Holidays = fromPairs(
+        data.filter(findHoliday).map((item) => [item.date, { occasion: findHoliday(item)!.event }])
+      );
 
-    console.log(`Extracted ${keys(holidays).length} holidays from ${year}/${month}`);
-    return holidays;
-  });
-
-export const fileExists = async (path: string): Promise<boolean> =>
-  fs.promises
-    .access(path, fs.constants.F_OK)
-    .then(() => true)
-    .catch(() => false);
+      console.log(`${chalk.bold.green("Success")}: Extracted ${keys(holidays).length} holidays from ${year}/${month}`);
+      return holidays;
+    })
+    .catch((err) => {
+      console.log(`${chalk.bold.red("Failure")}: Error in extracting holidays from ${year}/${month}`);
+      throw err;
+    });
