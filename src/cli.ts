@@ -3,7 +3,7 @@ import fs from "fs";
 import { mergeAll } from "ramda";
 import { extractHolidays } from "./core";
 import { CliOptions, Holidays, LocalDate, Output } from "./types";
-import { addLeadingZeroIfSingle, compareLocalDate, createDatesArr, createOutput, fileExists } from "./utils";
+import { compareLocalDate, createDatesArr, createOutput, fileExists } from "./utils";
 
 const program = new Command();
 
@@ -56,10 +56,4 @@ process.on("unhandledRejection", (reason, promise) => {
   console.log("Unhandled Rejection at:", promise, "reason:", reason);
 });
 
-/**
- *
- * @param date - JS Date object
- * @returns date in `YYYY/MM/DD` format, used for lookup in scrap-jalali-holidays output json
- */
-export const getHolidaysJsonKey = (date: Date) =>
-  [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(addLeadingZeroIfSingle).join("-");
+export { getHolidaysJsonKey } from "./utils";

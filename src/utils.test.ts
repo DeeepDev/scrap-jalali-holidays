@@ -1,4 +1,4 @@
-import { addLeadingZeroIfSingle, compareLocalDate, createDatesArr } from "./utils";
+import { addLeadingZeroIfSingle, compareLocalDate, createDatesArr, getHolidaysJsonKey } from "./utils";
 
 describe("compareLocalDate", () => {
   it("should return -1 when date1 = { year: 1392, month: 6 } and date2 = { year: 1392, month: 8 }", () => {
@@ -63,5 +63,12 @@ describe("addLeadingZeroIfSingle", () => {
 
   it("should give 1384 when input is 1384", () => {
     expect(addLeadingZeroIfSingle(1384)).toBe("1384");
+  });
+});
+
+describe("getHolidaysJsonKey", () => {
+  it("should return 2020-04-03 when date = new Date(2020-04-03)", () => {
+    const date = new Date("2020-04-03");
+    expect(getHolidaysJsonKey(date)).toBe("2020-04-03");
   });
 });

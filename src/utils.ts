@@ -40,3 +40,11 @@ export const fileExists = async (path: string): Promise<boolean> =>
     .access(path, fs.constants.F_OK)
     .then(() => true)
     .catch(() => false);
+
+/**
+ *
+ * @param date - JS Date object
+ * @returns date in `YYYY/MM/DD` format, used for lookup in scrap-jalali-holidays output json
+ */
+export const getHolidaysJsonKey = (date: Date) =>
+  [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(addLeadingZeroIfSingle).join("-");
