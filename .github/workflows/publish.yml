@@ -29,11 +29,11 @@ jobs:
         run: |
           pnpm install
           pnpm build
-      - name: Create Pull-Request or Publish to npm
-        id: changeset
-        uses: changesets/action@v1
-        with:
-          publish: pnpm changeset publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Create Pull-Request or Publish to npm
+      #   id: changeset
+      #   uses: changesets/action@v1
+      #   with:
+      #     publish: pnpm changeset publish
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
