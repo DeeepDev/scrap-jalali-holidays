@@ -1,5 +1,11 @@
 # scrap-jalali-holidays
 
+## 0.3.0
+
+### Minor Changes
+
+- Add declaration types to the library
+
 ## 0.2.0
 
 ### Minor Changes
