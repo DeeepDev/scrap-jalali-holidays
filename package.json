@@ -13,10 +13,11 @@
     "dist"
   ],
   "main": "dist/index.mjs",
+  "types": "dist/types/index.d.ts",
   "description": "A Nodejs app that scraps jalali holidays from badesaba.ir",
   "license": "MIT",
   "bin": {
-    "scrap-jalali-holidays": "dist/index.mjs"
+    "scrap-jalali-holidays": "dist/cli.mjs"
   },
   "scripts": {
     "format": "prettier --write \"**/*.{js,ts,json}\"",
