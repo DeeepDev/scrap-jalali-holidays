@@ -55,5 +55,3 @@ cli(process.argv).catch((err) => {
 process.on("unhandledRejection", (reason, promise) => {
   console.log("Unhandled Rejection at:", promise, "reason:", reason);
 });
-
-export { getHolidaysJsonKey } from "./utils";
