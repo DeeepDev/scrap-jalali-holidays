@@ -1,10 +1,9 @@
+export type LocalDateTuple = [number, number];
+
 export type CliOptions = {
-  fromYear: string;
-  fromMonth: string;
-  toYear: string;
-  toMonth: string;
+  from: LocalDateTuple;
+  to: LocalDateTuple;
   forceUpdate: boolean;
-  scrapOccasions: boolean;
   outputFile: string;
 };
 

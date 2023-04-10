@@ -1,51 +1,61 @@
+import Ajv from "ajv";
 import { Command, Option } from "commander";
 import fs from "fs";
 import { mergeAll } from "ramda";
 import { extractHolidays } from "./core";
-import { CliOptions, Holidays, LocalDate, Output } from "./types";
+import { cliOptionsSchema } from "./schema";
+import { CliOptions, Holidays, LocalDate, LocalDateTuple, Output } from "./types";
 import { compareLocalDate, createDatesArr, createOutput, fileExists } from "./utils";
+
+const ajv = new Ajv({ useDefaults: true, allErrors: true });
+const validate = ajv.compile<CliOptions>(cliOptionsSchema);
+
+const dateParser = (arg: string) => arg.split("-").map(parseFloat) as LocalDateTuple;
 
 const program = new Command();
 
 const parseArgsIntoOptions = (rawArgs: string[]) => {
   program
-    .addOption(new Option("--from-year <from-year>", "from year").default("1300").makeOptionMandatory())
-    .addOption(new Option("--from-month <from-month>", "from month").default("1").makeOptionMandatory())
-    .addOption(new Option("--to-year <to-year>", "to year").default("1450").makeOptionMandatory())
-    .addOption(new Option("--to-month <to-month>", "to month").default("12").makeOptionMandatory())
-    .addOption(new Option("--force-update", "force update the json completely").default(false).makeOptionMandatory())
-    .addOption(new Option("--output-file <output-file>", "path of output file").makeOptionMandatory())
+    .addOption(new Option("--from <from>", "from date").argParser(dateParser))
+    .addOption(new Option("--to <to>", "to date").argParser(dateParser))
+    .addOption(new Option("--force-update", "force update the json completely"))
+    .addOption(new Option("--output-file <output-file>", "path of output file"))
     .parse(rawArgs);
 
   program.showHelpAfterError();
   program.showSuggestionAfterError();
 
-  return program.opts<CliOptions>();
+  return program.opts();
 };
 
 const cli = async (args: string[]): Promise<void> => {
   let options = parseArgsIntoOptions(args);
 
-  const { forceUpdate, outputFile: path } = options;
+  if (validate(options)) {
+    const { forceUpdate, outputFile: path } = options;
 
-  let oldHolidays: Holidays = {};
-  let from: LocalDate = { year: +options.fromYear, month: +options.fromMonth },
-    to: LocalDate = { year: +options.toYear, month: +options.toMonth };
+    let oldHolidays: Holidays = {};
+    let from: LocalDate = { year: options.from[0], month: options.from[1] },
+      to: LocalDate = { year: options.to[0], month: options.to[1] };
 
-  return fileExists(path)
-    .then((exists) =>
-      exists && !forceUpdate
-        ? fs.promises.readFile(path, { encoding: "utf-8" }).then((json) => {
-            const oldOutput = JSON.parse(json) as Output;
-            oldHolidays = oldOutput.holidays;
-            from = compareLocalDate(oldOutput.created_at, from) >= 0 ? oldOutput.created_at : from;
-            return createDatesArr({ from, to });
-          })
-        : createDatesArr({ from, to })
-    )
-    .then((datesArr) => Promise.all(datesArr.map(extractHolidays)))
-    .then((holidays) => createOutput({ ...oldHolidays, ...mergeAll(holidays) }))
-    .then((output) => fs.promises.writeFile(path, JSON.stringify(output)));
+    return fileExists(path)
+      .then((exists) =>
+        exists && !forceUpdate
+          ? fs.promises.readFile(path, { encoding: "utf-8" }).then((json) => {
+              // TODO: validate json file with ajv
+              const oldOutput = JSON.parse(json) as Output;
+              oldHolidays = oldOutput.holidays;
+              from = compareLocalDate(oldOutput.created_at, from) >= 0 ? oldOutput.created_at : from;
+              return createDatesArr({ from, to });
+            })
+          : createDatesArr({ from, to })
+      )
+      .then((datesArr) => Promise.all(datesArr.map(extractHolidays)))
+      .then((holidays) => createOutput({ ...oldHolidays, ...mergeAll(holidays) }))
+      .then((output) => fs.promises.writeFile(path, JSON.stringify(output)));
+  } else {
+    throw Error(validate.errors?.map((err) => err.instancePath + " " + err.message).join(", "));
+  }
 };
 
 cli(process.argv).catch((err) => {

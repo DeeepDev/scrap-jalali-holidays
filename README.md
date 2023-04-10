@@ -10,10 +10,8 @@ scrap-jalali-holidays [options]
 
 | Option                      | Description                      | Default |
 | --------------------------- | -------------------------------- | ------- |
-| --from-year <from-year>     | from year                        | 1300    |
-| --from-month <from-month>   | from month                       | 1       |
-| --to-year <to-year>         | to year                          | 1450    |
-| --to-month <to-month>       | to month                         | 12      |
+| --from <from>               | from date (YYYY-MM format)       | 1350-01 |
+| --to <to>                   | to date (YYYY-MM format)         | 1450-12 |
 | --force-update              | force update the json completely | false   |
 | --output-file <output-file> | path of output file              | N/A     |
 
