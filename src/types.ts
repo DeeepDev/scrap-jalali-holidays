@@ -9,7 +9,7 @@ export type CliOptions = {
 };
 
 export type LocalDate = { year: number; month: number };
-export type Holiday = { occasion?: string };
+export type Holiday = string;
 export type Holidays = Record<string, Holiday>;
 export type Output = { created_at: LocalDate; holidays: Holidays };
 
