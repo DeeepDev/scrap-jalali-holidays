@@ -1,15 +1,14 @@
+export type LocalDateTuple = [number, number];
+
 export type CliOptions = {
-  fromYear: string;
-  fromMonth: string;
-  toYear: string;
-  toMonth: string;
+  from: LocalDateTuple;
+  to: LocalDateTuple;
   forceUpdate: boolean;
-  scrapOccasions: boolean;
   outputFile: string;
 };
 
 export type LocalDate = { year: number; month: number };
-export type Holiday = { occasion?: string };
+export type Holiday = string;
 export type Holidays = Record<string, Holiday>;
 export type Output = { created_at: LocalDate; holidays: Holidays };
 
