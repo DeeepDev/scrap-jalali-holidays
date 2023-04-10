@@ -1,5 +1,11 @@
 # scrap-jalali-holidays
 
+## 0.4.0
+
+### Minor Changes
+
+- add schema to cli options
+
 ## 0.3.0
 
 ### Minor Changes
