@@ -18,6 +18,7 @@ export const cliOptionsSchema: JSONSchemaType<CliOptions> = {
       additionalItems: false,
       default: [1450, 12],
     },
+    scrapOccasions: { type: "boolean", default: false },
     outputExt: { type: "string", enum: ["js", "json"], default: "js" },
     outputDir: { type: "string" },
   },

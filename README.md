@@ -12,6 +12,7 @@ scrap-jalali-holidays [options]
 | --------------------------- | --------------------------------   | ------- |
 | --from <from>               | from date (YYYY-MM format)         | 1350-01 |
 | --to <to>                   | to date (YYYY-MM format)           | 1450-12 |
+| --scrap-occasions           | whether to scrap occasions or not  | false   |
 | --output-ext <output-ext>   | extension of output file (js|json) | js      |
 | --output-dir <output-dir>   | directory of output file           | N/A     |
 
