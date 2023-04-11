@@ -3,8 +3,8 @@ export type LocalDateTuple = [number, number];
 export type CliOptions = {
   from: LocalDateTuple;
   to: LocalDateTuple;
-  forceUpdate: boolean;
-  outputFile: string;
+  outputExt: "js" | "json";
+  outputDir: string;
 };
 
 export type LocalDate = { year: number; month: number };

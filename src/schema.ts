@@ -18,8 +18,8 @@ export const cliOptionsSchema: JSONSchemaType<CliOptions> = {
       additionalItems: false,
       default: [1450, 12],
     },
-    forceUpdate: { type: "boolean", default: false },
-    outputFile: { type: "string" },
+    outputExt: { type: "string", enum: ["js", "json"], default: "js" },
+    outputDir: { type: "string" },
   },
-  required: ["outputFile"],
+  required: ["outputDir"],
 };
