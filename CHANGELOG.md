@@ -1,5 +1,11 @@
 # scrap-jalali-holidays
 
+## 0.5.2
+
+### Patch Changes
+
+- minor bug fixes
+
 ## 0.5.1
 
 ### Patch Changes

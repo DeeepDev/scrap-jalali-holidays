@@ -1,6 +1,6 @@
 {
   "name": "scrap-jalali-holidays",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": {
     "name": "DeeepDev",
     "email": "amirabody.dev@gmail.com"
@@ -20,6 +20,7 @@
     "scrap-jalali-holidays": "dist/cli.mjs"
   },
   "scripts": {
+    "prepublish": "pnpm build",
     "format": "prettier --write \"**/*.{js,ts,json}\"",
     "format:check": "prettier --check \"**/*.{js,ts,json}\"",
     "type-check": "tsc",
