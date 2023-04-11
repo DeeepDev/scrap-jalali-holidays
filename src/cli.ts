@@ -45,7 +45,7 @@ const cli = async (args: string[]): Promise<void> => {
         let outputString = "";
 
         if (outputExt === "js")
-          outputString = `//eslint-disable\n//prettier-ignore\nmodule.exports = ${JSON.stringify(output)}`;
+          outputString = `/*eslint-disable*/\n//prettier-ignore\nexport default ${JSON.stringify(output)}`;
         else if (outputExt === "json") outputString = JSON.stringify(output);
 
         return fs.promises.writeFile(path.join(outputDir, `jalali-holidays.${outputExt}`), outputString);
