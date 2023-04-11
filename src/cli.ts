@@ -19,6 +19,7 @@ const parseArgsIntoOptions = (rawArgs: string[]) => {
   program
     .addOption(new Option("--from <from>", "from date").argParser(dateParser))
     .addOption(new Option("--to <to>", "to date").argParser(dateParser))
+    .addOption(new Option("--scrap-occasions", "whether to scrap occasions or not"))
     .addOption(new Option("--output-ext <output-ext>", "extension of output file"))
     .addOption(new Option("--output-dir <output-dir>", "dir of output file"))
     .parse(rawArgs);
@@ -33,12 +34,12 @@ const cli = async (args: string[]): Promise<void> => {
   let options = parseArgsIntoOptions(args);
 
   if (validate(options)) {
-    const { outputDir, outputExt } = options;
+    const { outputDir, outputExt, scrapOccasions } = options;
 
     const from: LocalDate = { year: options.from[0], month: options.from[1] },
       to: LocalDate = { year: options.to[0], month: options.to[1] };
 
-    return Promise.all(createDatesArr({ from, to }).map(extractHolidays))
+    return Promise.all(createDatesArr({ from, to }).map((localDate) => extractHolidays(localDate, scrapOccasions)))
       .then((holidays) => createOutput(mergeAll(holidays)))
       .then((output) => {
         let outputString = "";

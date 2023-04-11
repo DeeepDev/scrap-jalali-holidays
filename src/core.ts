@@ -8,11 +8,11 @@ const findHoliday = (item: ResponseBody[number]) => item.events.find((event) => 
 const getUrl = (year: LocalDate["year"], month: LocalDate["year"]) =>
   `https://badesaba.ir/api/site/getDataCalendar/${month}/${year}`;
 
-export const extractHolidays = async ({ year, month }: LocalDate): Promise<Holidays> =>
+export const extractHolidays = async ({ year, month }: LocalDate, scrapOccasions: boolean = false): Promise<Holidays> =>
   axios<ResponseBody>({ method: "post", url: getUrl(year, month) })
     .then(({ data }) => {
       const holidays: Holidays = fromPairs(
-        data.filter(findHoliday).map((item) => [item.date, findHoliday(item)!.event])
+        data.filter(findHoliday).map((item) => [item.date, scrapOccasions ? findHoliday(item)!.event : 1])
       );
 
       console.log(`${chalk.bold.green("Success")}: Extracted ${keys(holidays).length} holidays from ${year}/${month}`);
